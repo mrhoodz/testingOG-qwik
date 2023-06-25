@@ -1,7 +1,4 @@
 /** @jsxImportSource react */
-// import { type RequestHandler } from "@builder.io/qwik-city";
-// // import { ImageResponse } from "";
-// // import * as wasmModule from "../../../node_modules/@vercel/og/dist"
 
 import { ImageResponse } from "@vercel/og";
 import type { RequestHandler } from "@builder.io/qwik-city";
@@ -36,8 +33,6 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
 
     console.log("function got called  ");
     //
-
-    // searchParams.has("title")
 
     // process the params
     const title = hasTitle
