@@ -7,7 +7,7 @@ import { ImageResponse } from "@vercel/og";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { FirstLevelRoute } from "~/components/_firstLevelRoute";
 
-export const onGet: RequestHandler = async ({ status, send, url }) => {
+export const onRequest: RequestHandler = async ({ status, send, url }) => {
   try {
     //load background image
     const image: any = await fetch(
