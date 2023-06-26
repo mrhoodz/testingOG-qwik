@@ -52,6 +52,8 @@
     "vite-tsconfig-paths": "4.2.0"
   },
   "dependencies": {
-    "@vercel/og": "^0.5.8"
+    "@resvg/resvg-js": "^2.4.1",
+    "@vercel/og": "^0.5.8",
+    "satori": "^0.10.1"
   }
 }
