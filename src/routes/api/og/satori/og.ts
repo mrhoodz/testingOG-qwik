@@ -6,7 +6,7 @@ import type { SatoriOptions } from 'satori';
 import { renderAsync } from '@resvg/resvg-js';
 
 import { type EmojiType, getIconCode, loadEmoji } from './emoji';
-
+    
 const satoriImport = import('satori');
 const fallbackFont = fs.readFile('/exempt/testing/src/routes/api/og/satori/NotoSans-Regular.ttf');
 
