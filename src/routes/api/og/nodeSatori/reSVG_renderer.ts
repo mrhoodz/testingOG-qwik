@@ -146,7 +146,6 @@ export declare type ImageResponseOptions = ConstructorParameters<
 };
 
 export class ImageResponse {
-  //  Todo: element was ReactElement, but we don't have ReactElement in this project. Satori relies on this Type though.
   constructor(element: any, options: ImageResponseOptions = {}) {
     const extendedOptions = Object.assign(
       {
