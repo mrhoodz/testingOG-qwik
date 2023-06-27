@@ -9,6 +9,10 @@ export default component$(() => {
         Can't wait to see what you build with qwik!
         <br />
         Happy coding.
+        <img
+          src="http://localhost:5173/api/og/nodeSatori"
+          alt="satori based image"
+        />
       </p>
     </>
   );

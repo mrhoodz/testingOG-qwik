@@ -1,35 +1,37 @@
-// copied from https://github.com/m5r/og
-// utils/og/og.ts
+import fs from "node:fs/promises";
+import type { SatoriOptions } from "satori";
+import { renderAsync } from "@resvg/resvg-js";
+import type { EmojiType } from "./emoji";
+import { getIconCode, loadEmoji } from "./emoji";
 
-import fs from 'node:fs/promises';
-import type { SatoriOptions } from 'satori';
-import { renderAsync } from '@resvg/resvg-js';
+const satoriImport = import("satori");
 
-import { type EmojiType, getIconCode, loadEmoji } from './emoji';
-    
-const satoriImport = import('satori');
-const fallbackFont = fs.readFile('/exempt/testing/src/routes/api/og/satori/NotoSans-Regular.ttf');
+const fallbackFont = fs.readFile(
+  new URL("./NotoSans-Regular.ttf", import.meta.url)
+);
 
-const isDev = process.env.NODE_ENV === 'development';
+// console.log("foo font ", new URL("./NotoSans-Regular.ttf", import.meta.url));
+
+const isDev = process.env.NODE_ENV === "development";
 
 const languageFontMap = {
-  'ja-JP': 'Noto+Sans+JP',
-  'ko-KR': 'Noto+Sans+KR',
-  'zh-CN': 'Noto+Sans+SC',
-  'zh-TW': 'Noto+Sans+TC',
-  'zh-HK': 'Noto+Sans+HK',
-  'th-TH': 'Noto+Sans+Thai',
-  'bn-IN': 'Noto+Sans+Bengali',
-  'ar-AR': 'Noto+Sans+Arabic',
-  'ta-IN': 'Noto+Sans+Tamil',
-  'ml-IN': 'Noto+Sans+Malayalam',
-  'he-IL': 'Noto+Sans+Hebrew',
-  'te-IN': 'Noto+Sans+Telugu',
-  devanagari: 'Noto+Sans+Devanagari',
-  kannada: 'Noto+Sans+Kannada',
-  symbol: ['Noto+Sans+Symbols', 'Noto+Sans+Symbols+2'],
-  math: 'Noto+Sans+Math',
-  unknown: 'Noto+Sans',
+  "ja-JP": "Noto+Sans+JP",
+  "ko-KR": "Noto+Sans+KR",
+  "zh-CN": "Noto+Sans+SC",
+  "zh-TW": "Noto+Sans+TC",
+  "zh-HK": "Noto+Sans+HK",
+  "th-TH": "Noto+Sans+Thai",
+  "bn-IN": "Noto+Sans+Bengali",
+  "ar-AR": "Noto+Sans+Arabic",
+  "ta-IN": "Noto+Sans+Tamil",
+  "ml-IN": "Noto+Sans+Malayalam",
+  "he-IL": "Noto+Sans+Hebrew",
+  "te-IN": "Noto+Sans+Telugu",
+  devanagari: "Noto+Sans+Devanagari",
+  kannada: "Noto+Sans+Kannada",
+  symbol: ["Noto+Sans+Symbols", "Noto+Sans+Symbols+2"],
+  math: "Noto+Sans+Math",
+  unknown: "Noto+Sans",
 };
 async function loadGoogleFont(fontFamily: string | string[], text: string) {
   if (!fontFamily || !text) {
@@ -43,32 +45,34 @@ async function loadGoogleFont(fontFamily: string | string[], text: string) {
     await fetch(API, {
       headers: {
         // Make sure it returns TTF.
-        'User-Agent':
-          'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1',
+        "User-Agent":
+          "Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_8; de-at) AppleWebKit/533.21.1 (KHTML, like Gecko) Version/5.0.5 Safari/533.21.1",
       },
     })
   ).text();
-  const resource = css.match(/src: url\((.+)\) format\('(opentype|truetype)'\)/);
+  const resource = css.match(
+    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  );
   if (!resource) {
-    throw new Error('Failed to load font');
+    throw new Error("Failed to load font");
   }
 
   return fetch(resource[1]).then((res) => res.arrayBuffer());
 }
 const assetCache = new Map();
-const loadDynamicAsset = (emojiType: EmojiType = 'twemoji') => {
+const loadDynamicAsset = (emojiType: EmojiType = "twemoji") => {
   const fn = async (languageCode: string, text: string) => {
-    if (languageCode === 'emoji') {
+    if (languageCode === "emoji") {
       // It's an emoji, load the image.
       return (
-        'data:image/svg+xml;base64,' +
+        "data:image/svg+xml;base64," +
         btoa(await (await loadEmoji(getIconCode(text), emojiType)).text())
       );
     }
 
     // Try to load from Google Fonts.
     if (!Object.hasOwn(languageFontMap, languageCode)) {
-      languageCode = 'unknown';
+      languageCode = "unknown";
     }
     try {
       const fontData = await loadGoogleFont(
@@ -80,11 +84,11 @@ const loadDynamicAsset = (emojiType: EmojiType = 'twemoji') => {
           name: `satori_${languageCode}_fallback_${text}`,
           data: fontData,
           weight: 400,
-          style: 'normal',
+          style: "normal",
         };
       }
     } catch (error) {
-      console.error('Failed to load dynamic font for', text, '. Error:', error);
+      console.error("Failed to load dynamic font for", text, ". Error:", error);
     }
   };
   return async (...args: Parameters<typeof fn>) => {
@@ -100,7 +104,9 @@ const loadDynamicAsset = (emojiType: EmojiType = 'twemoji') => {
   };
 };
 
-export declare type ImageResponseOptions = ConstructorParameters<typeof Response>[1] & {
+export declare type ImageResponseOptions = ConstructorParameters<
+  typeof Response
+>[1] & {
   /**
    * The width of the image.
    *
@@ -128,7 +134,7 @@ export declare type ImageResponseOptions = ConstructorParameters<typeof Response
    * @type {{ data: ArrayBuffer; name: string; weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900; style?: 'normal' | 'italic' }[]}
    * @default Noto Sans Latin Regular.
    */
-  fonts?: SatoriOptions['fonts'];
+  fonts?: SatoriOptions["fonts"];
   /**
    * Using a specific Emoji style. Defaults to `twemoji`.
    *
@@ -160,18 +166,21 @@ export class ImageResponse {
           debug: extendedOptions.debug,
           fonts: extendedOptions.fonts || [
             {
-              name: 'sans serif',
+              name: "sans serif",
               data: fontData,
               weight: 700,
-              style: 'normal',
+              style: "normal",
             },
           ],
           loadAdditionalAsset: loadDynamicAsset(extendedOptions.emoji),
         });
         const image = await renderAsync(svg, {
           fitTo: {
-            mode: 'width',
+            mode: "width",
             value: extendedOptions.width,
+          },
+          font: {
+            loadSystemFonts: false,
           },
         });
         controller.enqueue(image.asPng());
@@ -180,10 +189,10 @@ export class ImageResponse {
     });
     return new Response(stream, {
       headers: {
-        'content-type': 'image/png',
-        'cache-control': isDev
-          ? 'no-cache, no-store'
-          : 'public, immutable, no-transform, max-age=31536000',
+        "content-type": "image/png",
+        "cache-control": isDev
+          ? "no-cache, no-store"
+          : "public, immutable, no-transform, max-age=31536000",
         ...extendedOptions.headers,
       },
       status: extendedOptions.status,
@@ -191,3 +200,11 @@ export class ImageResponse {
     });
   }
 }
+
+// try {
+//   const filePath = new URL("./tino.txt", import.meta.url);
+//   const contents = await readFile(filePath, { encoding: "utf8" });
+//   console.log(contents);
+// } catch (err: any) {
+//   console.error(err.message);
+// }

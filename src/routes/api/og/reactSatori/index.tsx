@@ -1,5 +1,6 @@
 /** @jsxImportSource react */
 
+// in this file we are using the ImageResponse from vercel/og
 import { ImageResponse } from "@vercel/og";
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { FirstLevelRoute } from "~/components/_firstLevelRoute";
