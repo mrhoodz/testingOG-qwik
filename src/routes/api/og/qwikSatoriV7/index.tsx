@@ -1,5 +1,3 @@
-/* eslint-disable qwik/jsx-img */
-
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { ImageResponse } from "./reSVG_renderer";
 import type { JSXNode } from "@builder.io/qwik";
@@ -30,6 +28,7 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
               name="NotoSans"
               style="normal"
             />
+            <img height={40} width={40} src="/assets/qwiklogo.png" />
             <h1 style={{ color: "red", fontFamily: "PoppinsBold" }}>Hello</h1>
             <h1 style={{ background: "blue", fontFamily: "NotoSans" }}>Qwik</h1>
           </div>
@@ -53,7 +52,7 @@ class genDynamicImage {
   public width: number;
   constructor(
     public JSXdata: JSXNode,
-    dimensions: { height: any; width: any },
+    dimensions: { height: number; width: number },
     public url: URL
   ) {
     const { height, width } = dimensions;
