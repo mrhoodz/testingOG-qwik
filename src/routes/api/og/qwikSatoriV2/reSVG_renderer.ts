@@ -199,3 +199,11 @@ export class ImageResponse {
     });
   }
 }
+
+// try {
+//   const filePath = new URL("./tino.txt", import.meta.url);
+//   const contents = await readFile(filePath, { encoding: "utf8" });
+//   console.log(contents);
+// } catch (err: any) {
+//   console.error(err.message);
+// }

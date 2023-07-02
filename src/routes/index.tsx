@@ -1,3 +1,4 @@
+/* eslint-disable qwik/jsx-img */
 import { component$ } from "@builder.io/qwik";
 import { type DocumentHead } from "@builder.io/qwik-city";
 
@@ -10,7 +11,7 @@ export default component$(() => {
         <br />
         Happy coding.
         <img
-          src="http://localhost:5173/api/og/nodeSatori"
+          src="http://localhost:5173/api/og/qwikSatoriV7"
           alt="satori based image"
         />
       </p>

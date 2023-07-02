@@ -10,6 +10,8 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
       new URL("../../../assets/Poppins-Bold.ttf", url)
     ).then((res) => res.arrayBuffer());
 
+    // console.log(url);
+
     const response = new ImageResponse(
       {
         type: "div",
@@ -32,7 +34,7 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
         height: 400,
         fonts: [
           {
-            name: "Poppins-Bold",
+            name: "PoppinsBold",
             data: poppinBold,
             style: "normal",
           },
