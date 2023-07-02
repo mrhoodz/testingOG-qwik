@@ -38,7 +38,7 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
       url
     ).renderImage();
 
-    send(demoImage as Response);
+    send(demoImage);
   } catch (e: any) {
     console.log(`${e.message}`);
     status(500);
@@ -127,7 +127,7 @@ class genDynamicImage {
     return [this.fontResources, this.ImageResources, myJSON];
   };
 
-  newOGimage = async (data: any, { height, width }: any) => {
+  newOGimage = async (data: any) => {
     // array of the objects of font details
 
     const fontResources = data[0];
@@ -150,8 +150,8 @@ class genDynamicImage {
 
     const cleanJSON = data[2];
     const response = new ImageResponse(cleanJSON, {
-      width: width,
-      height: height,
+      width: this.width,
+      height: this.height,
       fonts: await fontFetcher(),
       debug: true,
     });
@@ -161,8 +161,7 @@ class genDynamicImage {
 
   renderImage = async () => {
     return await this.newOGimage(
-      await this.findFontfromJSON(this.convertJSXtoJSON(this.JSXdata)),
-      { height: this.height, width: this.width }
+      await this.findFontfromJSON(this.convertJSXtoJSON(this.JSXdata))
     );
   };
 }
