@@ -2,11 +2,11 @@
 
 import type { RequestHandler } from "@builder.io/qwik-city";
 import { ImageResponse } from "./reSVG_renderer";
-import type { JSXNode } from "@builder.io/qwik";
+import { type JSXNode } from "@builder.io/qwik";
 
-let divNumber = 0;
-let fontNumber = 0;
-let arrayOfFontSrc: string[] = [];
+// let divNumber = 0;
+// let fontNumber = 0;
+// let arrayOfFontSrc: string[] = [];
 
 // export class satoriFontClass {
 //   constructor(public name: string, public data: any, public style: string) {
@@ -108,6 +108,7 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
     "../../../assets/Poppins-Bold.ttf"
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async function logData() {
     await singleFont.setData();
     // console.log({ ...singleFont });
@@ -120,39 +121,69 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
     ).then((res) => res.arrayBuffer());
 
     // console.log(await logData());
-    const response = new ImageResponse(
-      convertToJSX(
+    const Frame = ({ children, height, width }: any) => {
+      console.log(height);
+      return children;
+    };
+
+    const myFrame = (
+      <Frame height="100px" width="333px" url={url}>
         <>
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
+              flexDirection: "column",
               height: "100%",
               width: "100%",
               color: "black",
               backgroundColor: "yellow",
             }}
           >
-            <div>hello there how are you there</div>
+            {/* <Frame>qwqqqqqqqqqq</Frame> */}
+            <div>Boomed</div>
           </div>
 
           {/* <Font fontSrc="assets/fonts" />
-          <Font fontSrc="components/resources" /> */}
+<Font fontSrc="components/resources" /> */}
         </>
-      ),
-      {
-        width: 400,
-        height: 400,
-        fonts: [
-          {
-            name: "PoppinsBold",
-            data: poppinBold,
-            style: "normal",
-          },
-        ],
-      }
+      </Frame>
     );
+    console.log(myFrame);
+    const myJSX = (
+      <>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            height: "100%",
+            width: "100%",
+            color: "black",
+            backgroundColor: "yellow",
+          }}
+        >
+          {/* <Frame>qwqqqqqqqqqq</Frame> */}
+          <div>hello there how are you there</div>
+        </div>
+
+        {/* <Font fontSrc="assets/fonts" />
+    <Font fontSrc="components/resources" /> */}
+      </>
+    );
+    const response = new ImageResponse(convertToJSX(myFrame), {
+      width: 400,
+      height: 400,
+      fonts: [
+        {
+          name: "PoppinsBold",
+          data: poppinBold,
+          style: "normal",
+        },
+      ],
+    });
     send(response as Response);
   } catch (e: any) {
     console.log(`${e.message}`);
@@ -169,7 +200,7 @@ export const Font = (fontSrc: any) => {
 
 // convertToJSX(
 //   <any>
-//     <div
+//     <d
 //       style={{
 //         display: "flex",
 //         justifyContent: "center",
@@ -181,7 +212,7 @@ export const Font = (fontSrc: any) => {
 //       }}
 //     >
 //       <div>hello there how are you</div>
-//     </div>
+//     </d>
 
 //     <Font fontSrc="assets/fonts" />
 //     <Font fontSrc="components/resources" />

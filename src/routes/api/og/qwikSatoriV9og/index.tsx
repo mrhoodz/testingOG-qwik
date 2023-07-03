@@ -2,78 +2,22 @@ import type { RequestHandler } from "@builder.io/qwik-city";
 import { ImageResponse } from "./reSVG_renderer";
 import type { JSXNode } from "@builder.io/qwik";
 
-// const myJSX = (
-//   <div
-//     style={{
-//       position: "relative",
-//       height: "100%",
-//       width: "100%",
-//       backgroundColor: "yellow",
-//       display: "flex",
-//       justifyContent: "center",
-//       alignItems: "center",
-//     }}
-//   >
-//     <font$ src="/assets/Poppins-Bold.ttf" name="PoppinsBold" style="normal" />
-//     <font$ src="/assets/NotoSans-Regular.ttf" name="NotoSans" style="normal" />
-//     <img height={40} width={40} src="/assets/qwiklogo.png" />
-//     <h1 style={{ color: "red", fontFamily: "PoppinsBold" }}>Boomed</h1>
-//     <h1 style={{ background: "blue", fontFamily: "NotoSans" }}>Qwik</h1>
-//   </div>
-// );
-
 export const Frame = ({ children }: any) => {
   // console.log("holly cowssss");
 
   return <>{children}</>;
 };
 
-export const Font: any = ({ src, fontName, style }: any) => {
+export const Font = ({ src, fontName, style }: any) => {
   // console.log(fontName);
 
   return {
-    type: "font$",
-    props: { src: src, fontName: fontName },
-    style: style,
-  };
+    props: { src: src, fontName: fontName, style: style },
+  } as any;
 };
 
 export const onRequest: RequestHandler = async ({ status, send, url }) => {
   try {
-    // const myFrame: any = (
-    //   <Frame height={400} width={100} url={url}>
-    //     <div
-    //       style={{
-    //         position: "relative",
-    //         height: "100%",
-    //         width: "100%",
-    //         backgroundColor: "yellow",
-    //         display: "flex",
-    //         justifyContent: "center",
-    //         alignItems: "center",
-    //       }}
-    //     >
-    //       <font$
-    //         src="/assets/Poppins-Bold.ttf"
-    //         name="PoppinsBold"
-    //         style="normal"
-    //       />
-    //       <font$
-    //         src="/assets/NotoSans-Regular.ttf"
-    //         name="NotoSans"
-    //         style="normal"
-    //       />
-    //       <img height={40} width={40} src="/assets/qwiklogo.png" />
-    //       <h1 style={{ color: "red", fontFamily: "PoppinsBold" }}>Boomed</h1>
-    //       <h1 style={{ background: "blue", fontFamily: "NotoSans" }}>Qwik</h1>
-    //     </div>
-    //   </Frame>
-    // );
-
-    // await Frame();
-    // console.log(Frame());
-    // console.log(<Frame>ksksksk</Frame>);
-
     const demoFunction = async () => {
       const demoImage = await new genDynamicImage(
         (
@@ -89,12 +33,6 @@ export const onRequest: RequestHandler = async ({ status, send, url }) => {
                 alignItems: "center",
               }}
             >
-              {/* <Font
-                src="/assets/Poppins-Bold.ttf"
-                fontName="xx"
-                style="normal"
-              /> */}
-
               <Font
                 src="/assets/Poppins-Bold.ttf"
                 fontName="PoppinsBold"
